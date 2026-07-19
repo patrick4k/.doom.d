@@ -77,3 +77,9 @@
 
 (add-hook 'rustic-mode-hook
           (lambda () (modify-syntax-entry ?_ "w")))
+
+;; Idk what the right way to do this is
+(map!
+ :map evil-normal-state-map
+ :prefix "SPC p"
+ "/" #'projectile-replace-regexp)
