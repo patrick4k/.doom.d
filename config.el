@@ -82,4 +82,5 @@
 (map!
  :map evil-normal-state-map
  :prefix "SPC p"
- "/" #'projectile-replace-regexp)
+ "/" #'projectile-replace
+ "?" #'projectile-replace-regexp)
