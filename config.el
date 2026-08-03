@@ -75,7 +75,7 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(add-hook 'rustic-mode-hook
+(add-hook 'prog-mode-hook
           (lambda () (modify-syntax-entry ?_ "w")))
 
 ;; Idk what the right way to do this is
