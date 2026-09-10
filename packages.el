@@ -52,3 +52,8 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
 (package! evil-tutor)
+
+(package! code-review
+  :recipe (:host github
+           :repo "doomelpa/code-review"
+           :files ("graphql" "code-review*.el")))

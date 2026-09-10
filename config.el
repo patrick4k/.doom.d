@@ -32,7 +32,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-badger)
+(setq doom-theme 'doom-badger-black)
 (setq doom-font (font-spec :size 15 ))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -84,3 +84,14 @@
  :prefix "SPC p"
  "/" #'projectile-replace
  "?" #'projectile-replace-regexp)
+
+;; https://github.com/doomelpa/code-review
+(add-hook 'code-review-mode-hook
+          (lambda ()
+            ;; include *Code-Review* buffer into current workspace
+            (persp-add-buffer (current-buffer))))
+
+;; Ghub 5.x moved `ghub-graphql' (which code-review calls) into
+;; ghub-legacy.el, which nothing loads by default.
+(after! code-review
+  (require 'ghub-legacy))
