@@ -57,3 +57,11 @@
   :recipe (:host github
            :repo "doomelpa/code-review"
            :files ("graphql" "code-review*.el")))
+
+;; (package! typst-ts-mode
+;;   :recipe (:host codeberg :repo "meow_king/typst-ts-mode" :branch "main" :files (:default "*.el")))
+;; (package! typst-preview)
+
+(require 'compile)
+(package! typst-ts-mode :recipe (:host codeberg :repo "meow_king/typst-ts-mode"))
+;; (package! typst-ts-mode :pin "4610172f312e8ce5184e6882be5ad1a1cd800fbe" :recipe (:host codeberg :repo "meow_king/typst-ts-mode" ))

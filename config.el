@@ -33,7 +33,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-badger-black)
-(setq doom-font (font-spec :size 15 ))
+(setq doom-font (font-spec :size 17 ))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -95,3 +95,11 @@
 ;; ghub-legacy.el, which nothing loads by default.
 (after! code-review
   (require 'ghub-legacy))
+
+
+(add-to-list 'auto-mode-alist '("\\.typ\\'" . typst-ts-mode))
+(after! eglot
+  (after! typst-ts-mode
+    (add-to-list 'eglot-server-programs
+                 '(typst-ts-mode . ("tinymist")))))
+(add-hook 'typst-ts-mode-hook #'eglot-ensure)
