@@ -32,12 +32,12 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-badger-black)
-(setq doom-font (font-spec :size 17 :family "JetBrains Mono" ))
+(setq doom-theme 'modus-vivendi)
+(setq doom-font (font-spec :size 16 :family "JetBrains Mono" ))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type 'visual)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -78,6 +78,13 @@
 (add-hook 'prog-mode-hook
           (lambda () (modify-syntax-entry ?_ "w")))
 
+(map!
+ "M-L" #'evil-window-right
+ "M-H" #'evil-window-left
+ "M-K" #'evil-window-up
+ "M-J" #'evil-window-down
+ )
+
 ;; Idk what the right way to do this is
 (map!
  :map evil-normal-state-map
@@ -91,6 +98,8 @@
             ;; include *Code-Review* buffer into current workspace
             (persp-add-buffer (current-buffer))))
 
+(defalias 'perl-mode 'cperl-mode)
+
 ;; Ghub 5.x moved `ghub-graphql' (which code-review calls) into
 ;; ghub-legacy.el, which nothing loads by default.
 (after! code-review
@@ -103,3 +112,27 @@
     (add-to-list 'eglot-server-programs
                  '(typst-ts-mode . ("tinymist")))))
 (add-hook 'typst-ts-mode-hook #'eglot-ensure)
+
+(defun my/zig-program ()
+  "Guess the executable to debug: the one named after the project, else the first."
+  (let* ((root (if-let ((p (project-current))) (project-root p) default-directory))
+         (bin (expand-file-name "zig-out/bin/" root))
+         (exes (and (file-directory-p bin)
+                    (seq-filter #'file-regular-p (directory-files bin t "^[^.]"))))
+         (proj-name (file-name-nondirectory (directory-file-name root))))
+    (or (seq-find (lambda (f) (equal (file-name-nondirectory f) proj-name)) exes)
+        (car exes)
+        (expand-file-name proj-name bin))))
+
+(after! dape
+  (add-to-list 'dape-configs
+               `(zig-debug
+                 modes (zig-mode zig-ts-mode)
+                 command "lldb-dap"
+                 command-cwd dape-command-cwd
+                 compile "zig build"
+                 :type "lldb-dap"
+                 :request "launch"
+                 :cwd "."
+                 :program my/zig-program
+                 :args [])))
