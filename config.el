@@ -140,5 +140,3 @@
 (global-hl-line-mode -1)
 (add-hook! '(prog-mode-hook text-mode-hook conf-mode-hook special-mode-hook)
            #'hl-line-mode)
-(after! hl-line
-  (setq hl-line-sticky-flag nil))
